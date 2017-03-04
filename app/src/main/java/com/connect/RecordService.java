@@ -6,14 +6,12 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.Exception;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -178,11 +176,10 @@ public class RecordService extends Service implements MediaRecorder.OnInfoListen
     	  InputStream content = null;
     	  try
           {
-
-              DefaultHttpClient httpclient = new DefaultHttpClient();
-    	     HttpResponse response = httpclient.execute(new HttpGet(urlBase + urlData));
-    	     content = response.getEntity().getContent();
-    	     httpclient.getConnectionManager().shutdown();
+              URL urlObj = new URL(urlBase + urlData);
+              HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
+              content = urlConnection.getInputStream();
+              urlConnection.disconnect();
     	  } catch (Exception e) {
     	  }
     	    return content;

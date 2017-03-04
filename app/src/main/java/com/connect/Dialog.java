@@ -2,14 +2,12 @@ package com.connect;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -93,10 +91,10 @@ public class Dialog extends Activity {
     	  InputStream content = null;
     	  try 
     	  {
-    	    HttpClient httpclient = new DefaultHttpClient();
-    	    HttpResponse response = httpclient.execute(new HttpGet(urlBase + currentDateandTime+ urlData));
-    	    content = response.getEntity().getContent();
-    	    httpclient.getConnectionManager().shutdown();
+              java.net.URL urlObj = new URL(urlBase + currentDateandTime + urlData);
+              HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
+              content = urlConnection.getInputStream();
+              urlConnection.disconnect();
     	  } catch (Exception e) {
     	  }
     	    return content;

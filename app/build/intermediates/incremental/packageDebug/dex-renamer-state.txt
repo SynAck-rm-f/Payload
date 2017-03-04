@@ -1,7 +1,0 @@
-#Sat Mar 04 15:55:39 CET 2017
-base.0=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_244ee167b4bf8c8603c3a50ff5e95c80a063d556
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_737efad38f18c44f51d5a60a81ee6a92820bfca5\\classes.dex
-base.1=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_737efad38f18c44f51d5a60a81ee6a92820bfca5
-file.0=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_244ee167b4bf8c8603c3a50ff5e95c80a063d556\\classes.dex

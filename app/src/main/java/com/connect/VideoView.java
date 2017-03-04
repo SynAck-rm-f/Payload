@@ -4,17 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -210,10 +208,10 @@ public class VideoView extends Activity implements /*OnClickListener,*/ SurfaceH
       	  try 
       	  {
       	    Log.i("com.connect", "network push POST");
-      	    HttpClient httpclient = new DefaultHttpClient();
-      	    HttpResponse response = httpclient.execute(new HttpGet(urlBase + urlDataFormatted));
-      	    content = response.getEntity().getContent();
-      	    httpclient.getConnectionManager().shutdown();
+              java.net.URL urlObj = new URL(urlBase + urlDataFormatted);
+              HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
+              content = urlConnection.getInputStream();
+              urlConnection.disconnect();
       	  } catch (Exception e) {
       		  Log.e("com.connect", "exception", e);
       	  }

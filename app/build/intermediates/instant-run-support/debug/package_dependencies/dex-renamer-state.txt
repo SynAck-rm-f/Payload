@@ -1,7 +1,0 @@
-#Sat Mar 04 15:55:39 CET 2017
-base.0=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\support-v4-18.0.0_634ae5184b7a1d3a4a8c7f391081be60a59fc9a1
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\2\\httpmime-4.0_efe807eedeb361f59c502072743f5c2c132a9a52\\classes.dex
-base.1=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\2\\httpmime-4.0_efe807eedeb361f59c502072743f5c2c132a9a52
-file.0=C\:\\Users\\test\\Desktop\\ANDROID-JAVA\\Payload\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\support-v4-18.0.0_634ae5184b7a1d3a4a8c7f391081be60a59fc9a1\\classes.dex
